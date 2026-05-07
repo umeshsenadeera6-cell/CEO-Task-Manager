@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: oklch(0.98 0.01 240);
+  --foreground: oklch(0.15 0.02 240);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.02 240);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.02 240);
+  --primary: oklch(0.35 0.15 240); /* Deep Blue */
+  --primary-foreground: oklch(0.98 0.01 240);
+  --secondary: oklch(0.92 0.02 240);
+  --secondary-foreground: oklch(0.2 0.05 240);
+  --muted: oklch(0.95 0.02 240);
+  --muted-foreground: oklch(0.45 0.05 240);
+  --accent: oklch(0.92 0.02 240);
+  --accent-foreground: oklch(0.2 0.05 240);
+  --destructive: oklch(0.6 0.18 20);
+  --destructive-foreground: oklch(0.98 0.01 240);
+  --border: oklch(0.9 0.02 240);
+  --input: oklch(0.9 0.02 240);
+  --ring: oklch(0.35 0.15 240);
+  --chart-1: oklch(0.65 0.24 169);
+  --chart-2: oklch(0.6 0.16 47);
+  --chart-3: oklch(0.45 0.15 240);
+  --chart-4: oklch(0.75 0.16 85);
+  --chart-5: oklch(0.6 0.18 12);
+  --radius: 0.75rem;
+
+  /* Custom Accents */
+  --success: oklch(0.7 0.15 140);
+  --warning: oklch(0.75 0.15 60);
+  --error: oklch(0.6 0.2 20);
+  --analytics: oklch(0.6 0.2 280);
+}
+
+.dark {
+  --background: oklch(0.12 0.02 240);
+  --foreground: oklch(0.98 0.01 240);
+  --card: oklch(0.15 0.02 240);
+  --card-foreground: oklch(0.98 0.01 240);
+  --popover: oklch(0.15 0.02 240);
+  --popover-foreground: oklch(0.98 0.01 240);
+  --primary: oklch(0.45 0.15 240);
+  --primary-foreground: oklch(0.98 0.01 240);
+  --secondary: oklch(0.2 0.05 240);
+  --secondary-foreground: oklch(0.98 0.01 240);
+  --muted: oklch(0.2 0.05 240);
+  --muted-foreground: oklch(0.7 0.02 240);
+  --accent: oklch(0.2 0.05 240);
+  --accent-foreground: oklch(0.98 0.01 240);
+  --destructive: oklch(0.4 0.18 20);
+  --destructive-foreground: oklch(0.98 0.01 240);
+  --border: oklch(0.25 0.02 240);
+  --input: oklch(0.25 0.02 240);
+  --ring: oklch(0.45 0.15 240);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .glass {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}

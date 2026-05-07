@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CEO
+  MANAGER
+  EMPLOYEE
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum Status {
+  PENDING
+  IN_PROGRESS
+  UNDER_REVIEW
+  COMPLETED
+  REJECTED
+  OVERDUE
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          Role      @default(EMPLOYEE)
+  profileImage  String?
+  departmentId  String?
+  department    Department? @relation("DepartmentMembers", fields: [departmentId], references: [id])
+  managedDept   Department? @relation("DepartmentManager")
+  
+  tasksAssigned Task[]    @relation("AssignedBy")
+  tasksReceived Task[]    @relation("AssignedTo")
+  comments      Comment[]
+  notifications Notification[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Department {
+  id            String   @id @default(uuid())
+  name          String   @unique
+  managerId     String?  @unique
+  manager       User?    @relation("DepartmentManager", fields: [managerId], references: [id])
+  members       User[]   @relation("DepartmentMembers")
+  tasks         Task[]
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Task {
+  id            String    @id @default(uuid())
+  title         String
+  description   String?
+  priority      Priority  @default(MEDIUM)
+  status        Status    @default(PENDING)
+  deadline      DateTime?
+  attachments   String[]  @default([])
+  
+  creatorId     String
+  creator       User      @relation("AssignedBy", fields: [creatorId], references: [id])
+  
+  assigneeId    String?
+  assignee      User?     @relation("AssignedTo", fields: [assigneeId], references: [id])
+  
+  departmentId  String
+  department    Department @relation(fields: [departmentId], references: [id])
+  
+  comments      Comment[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  message   String
+  isRead    Boolean  @default(false)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  
+  createdAt DateTime @default(now())
+}
